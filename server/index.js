@@ -11,22 +11,10 @@ app.use(bodyParser.json({extended : true}))
 app.use(bodyParser.urlencoded({extended : true}))
 app.use(cors())
 
+Connection("user", "ayushprojectsdb")
 
 app.use("/", router)
 
-// app.get("/posts", (req, res) => {
-//     res.send("Hello");
-// })
-
-Connection("user", "ayushprojectsdb")
-
-const signup = require('./controller/signup')
-
-app.use('/', (req, res) => {
-    res.send("Home route working")
-})
-
-app.post('/signup', signup)
 
 const PORT = 5000
 
