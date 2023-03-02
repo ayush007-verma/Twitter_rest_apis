@@ -12,13 +12,16 @@ app.use(cors())
 
 Connection("user", "ayushprojectsdb")
 
+const signup = require('./controller/signup')
 
 app.use('/', (req, res) => {
     res.send("Home route working")
 })
 
-const PORT = 8000
+app.post('/signup', signup)
+
+const PORT = 5000
 
 app.listen(PORT, ()=>{
-    console.log(`Listening to {PORT}`)
+    console.log(`Listening to ${PORT}`)
 })
