@@ -5,7 +5,7 @@ const cors = require('cors')
 
 const express = require('express')
 const app = express()
-const router = require('./routes')
+const router = require('./Routes/routes')
 
 app.use(bodyParser.json({extended : true}))
 app.use(bodyParser.urlencoded({extended : true}))
