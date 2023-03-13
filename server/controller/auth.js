@@ -3,8 +3,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
 
-const baseUrl = 'http://localhost:3000'
-
 const Signup = require('../Models/userSchema')
 
 const secretkey = process.env.SECRET_KEY
