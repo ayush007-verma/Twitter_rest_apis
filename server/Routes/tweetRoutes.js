@@ -2,13 +2,16 @@ const express = require('express');
 const router = express.Router();
 
 const { verifyUser } = require('../verifyUser')
-const { createTweet, deleteTweet, likeOrDislike, getTweet, getTweetById } = require('../controller/tweet')
+const { createTweet, deleteTweet, likeOrDislike, getTweet, getAllTweets, getUserTweets } = require('../controller/tweet')
 
 // GET ALL TWEETS
 router.get('/getTweets', getTweet)
 
-// GET ALL TWEETS BY USER ID
-router.get('/getTweets/:id', getTweetById)
+// GET ALL TIMELINE TWEETS
+router.get('/getTweets/:id', verifyUser, getAllTweets)
+
+// GET CURRENT USER TWEETS ONLY
+router.get('/getTweets/all/:id', getUserTweets)
 
 // CREATE TWEET ROUTE
 router.post('/', verifyUser, createTweet)
