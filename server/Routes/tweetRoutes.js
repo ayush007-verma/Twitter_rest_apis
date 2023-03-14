@@ -11,7 +11,7 @@ router.get('/getTweets', getTweet)
 router.get('/getTweets/:id', verifyUser, getAllTweets)
 
 // GET CURRENT USER TWEETS ONLY
-router.get('/getTweets/all/:id', getUserTweets)
+router.get('/getTweets/all/:id', verifyUser, getUserTweets)
 
 // CREATE TWEET ROUTE
 router.post('/', verifyUser, createTweet)
