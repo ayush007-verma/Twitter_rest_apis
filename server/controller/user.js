@@ -48,7 +48,7 @@ const follow = async (req, res, next) => {
         const currentUser = await User.findById(req.body.id)
 
         if(!user.followers.includes(req.body.id)) {
-            await User.updateOne({
+            await user.updateOne({
                 $push: {followers: req.body.id},
             });
 
