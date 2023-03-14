@@ -73,7 +73,7 @@ const getAllTweets = async (req, res, next) => {
     }
 }
 
-const getUserTweets = async (req, res) => {
+const getUserTweets = async (req, res, next) => {
     try {
         const userTweets = await Tweet.find({userId: req.params.id}).sort({
             createdAt: -1
