@@ -1,5 +1,24 @@
 const Tweet = require('../Models/tweetSchema')
 
+const getTweet = async (req, res) => {
+    try {
+        const Tweets = await Tweet.find({})
+        res.status(200).json({message: "All Tweets Successfully retrieved", data: Tweets, statusCode: 200})
+    } catch (error) {
+        res.status(500).json({message: "Some error occurred", data: error, statusCode: 500})
+    }
+}
+
+const getTweetById = async (req, res) => {
+    try {
+        const Tweets = await Tweet.find({userId : req.params.id})
+        res.status(200).json({message: "UserID Tweets Successfully retrieved", data: Tweets, statusCode: 200})
+    } catch (error) {
+        res.status(500).json({message: "Some error occurred", data: error, statusCode: 500})
+    }
+}
+
+
 const createTweet = async (req, res, next) => {
     const newTweet = new Tweet(req.body)
     try {
@@ -48,4 +67,4 @@ const likeOrDislike = async (req, res, next) => {
     }
 }
 
-module.exports = { createTweet, deleteTweet, likeOrDislike }
+module.exports = { getTweet, createTweet, deleteTweet, likeOrDislike, getTweetById }
