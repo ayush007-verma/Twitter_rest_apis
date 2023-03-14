@@ -16,7 +16,7 @@ router.get('/getUsers', (req, res) => {
 // DELETE ALL USERS DATA
 router.delete('/deleteUsers', (req, res) => {
     User.deleteMany()
-        .then(result => res.status(200).json({ message: 'All Users', users: result }))
+        .then(result => res.status(200).json({ message: 'Users Deleted Successfully', users: result }))
         .catch(error => res.status(500).json({ message: 'Server Error', err: error }))
 })
 
