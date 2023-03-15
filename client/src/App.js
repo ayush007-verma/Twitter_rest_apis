@@ -1,6 +1,7 @@
 import { RouterProvider, Outlet, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/NavBar/NavBar";
+import Error from "./pages/Error/Error";
 import Explore from "./pages/Explore/Explore";
 import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile/Profile";
@@ -18,6 +19,7 @@ const Layout = () => {
 const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <Error />,
     element: <Layout />,
     children: [
       {
