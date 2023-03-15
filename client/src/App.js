@@ -1,36 +1,53 @@
-// import './App.css';
-// import Auth from './components/Auth';
-// import Cookies from 'universal-cookie';
-// import PasswordReset from './components/PasswordReset';
+import { RouterProvider, Outlet, createBrowserRouter } from "react-router-dom";
+import "./App.css";
+import NavBar from "./components/NavBar/NavBar";
+import Explore from "./pages/Explore/Explore";
+import Home from "./pages/Home/Home";
+import Profile from "./pages/Profile/Profile";
+import Signin from "./pages/Signin/Signin";
 
-// const cookies = new Cookies();
+const Layout = () => {
+  return (
+    <div className="w-50 mx-auto">
+      <NavBar />
+      <Outlet></Outlet>
+    </div>
+  );
+};
 
-// const authToken = cookies.get("authToken");
-
-
-// const App = () => {
-  
-//   if (!authToken) {
-//     return <Auth />
-//   }
-
-//   return (
-//     <div className="App">
-//       <PasswordReset />
-//     </div>
-//   );
-// }
-
-// export default App;
-
-import './App.css';
-
-import Home from "./components/Home/Home"
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/profile/:id",
+        element: <Profile />,
+      },
+      {
+        path: "/explore",
+        element: <Explore />,
+      },
+      {
+        path: "/login",
+        element: <Signin />,
+      },
+      {
+        path: "/logout",
+        element: <Signin />,
+      },
+    ],
+  },
+]);
 
 function App() {
   return (
-    <div className="App">
-      <Home/> 
+    <div>
+      <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }
