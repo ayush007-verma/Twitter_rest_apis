@@ -56,23 +56,23 @@ const signup = async (req, res) => {
     });
     const existingUser = await User.findOne({ email: req.body.email });
     if (existingUser) {
-      return res
+      res
         .status(400)
         .json({
           message: "Email already exists, try again with a different email",
           statusCode: 400
         });
     }
-    const token = jwt.sign({ id: user._id }, secretkey, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id }, secretkey);
     const savedUser = await user.save();
-    return res
+    res
       .cookie("access_token", token, {
         httpOnly: true,
       })
       .status(201)
       .json({ message: "User Signup Successful!", userDetails: savedUser, statusCode: 201 });
   } catch (error) {
-    return res
+    res
       .status(500)
       .json({
         message: "Server encountered an error, please try again later",
@@ -82,25 +82,23 @@ const signup = async (req, res) => {
   }
 };
 
-const signin = async (req, res) => {
+const signin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });
     if (!user) {
-      return res
+      res
         .status(404)
         .json({ message: "Authentication failed. User not found.", statusCode: 404 });
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      return res
+      res
         .status(401)
         .json({ message: "Authentication failed. Wrong password.", statusCode: 401 });
     }
-    const token = jwt.sign({ id: user._id }, secretkey, {
-      expiresIn: "1h",
-    });
-    return res
+    const token = jwt.sign({ id: user._id }, secretkey);
+    res
       .cookie("access_token", token, {
         httpOnly: true,
       })
@@ -108,7 +106,7 @@ const signin = async (req, res) => {
       .json({ message: "Authentication successful.", data: user, statusCode: 200 });
   } catch (error) {
     console.error("Signin error:", error);
-    return res
+    res
       .status(500)
       .json({
         message: "Server encountered an error, please try again later",
