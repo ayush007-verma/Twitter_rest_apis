@@ -58,7 +58,7 @@ const likeOrDislike = async (req, res, next) => {
     }
 }
 
-const getAllTweets = async (req, res, next) => {
+const getAllTweets = async (req, res) => {
     try {
         const currentUser = await User.findById(req.params.id)
         const userTweets = await Tweet.find({ userId: currentUser._id })
@@ -73,7 +73,7 @@ const getAllTweets = async (req, res, next) => {
     }
 }
 
-const getUserTweets = async (req, res, next) => {
+const getUserTweets = async (req, res) => {
     try {
         const userTweets = await Tweet.find({userId: req.params.id}).sort({
             createdAt: -1
@@ -84,4 +84,17 @@ const getUserTweets = async (req, res, next) => {
     }
 }
 
-module.exports = { getTweet, createTweet, deleteTweet, likeOrDislike, getAllTweets, getUserTweets }
+const getExploreTweets = async (req, res) => {
+    try {
+        const exploreTweets = await Tweet.find({
+            likes: {
+                $exists: true
+            },
+        }).sort({ likes: -1 })
+        res.status(200).json({message: exploreTweets, statusCode: 200});
+    } catch (error) {
+        res.status(500).json({ message: error, statusCode: 500 })
+    }
+}
+
+module.exports = { getTweet, createTweet, deleteTweet, likeOrDislike, getAllTweets, getUserTweets, getExploreTweets }

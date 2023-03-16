@@ -3,8 +3,16 @@ import { Link } from 'react-router-dom'
 import HomeIcon from '@mui/icons-material/Home';
 import TagIcon from '@mui/icons-material/Tag';
 import PersonIcon from '@mui/icons-material/Person';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/userSlice';
 
 const LeftSideBar = () => {
+    const dispatch = useDispatch()
+
+    const handleLogout = () => {
+        dispatch(logout())
+    }
+
     return (
         <div className='flex flex-column h-full md:h-[90vh] justify-between mr-6'>
             <div className='mt-6 flex flex-column space-y-4'>
@@ -36,7 +44,7 @@ const LeftSideBar = () => {
                 </div>
                 <div>
                     <Link to='/login'>
-                        <button className='bg-red-500 text-white rounded-full px-3 py-2'>Logout</button>
+                        <button className='bg-red-500 text-white rounded-full px-3 py-2' onClick={handleLogout}>Logout</button>
                     </Link>
                 </div>
             </div>
