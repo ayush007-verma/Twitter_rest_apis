@@ -31,7 +31,7 @@ router.get('/find/:id', (req, res) => {
 router.put('/:id', verifyUser, updateUser)
 
 // DELETE USER ROUTE
-router.delete(':/id', verifyUser, deleteUser)
+router.delete('/:id', verifyUser, deleteUser)
 
 // FOLLOW
 router.put('/follow/:id', verifyUser, follow)

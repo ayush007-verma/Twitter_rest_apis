@@ -20,7 +20,9 @@ const Tweet = ({ tweet, setData }) => {
         const fetchData = async () => {
             try {
                 const findUser = await axios.get(`${api}/users/find/${tweet.userId}`);
-                setUserData(findUser.data);
+                // console.log(findUser);
+                // return false;
+                setUserData(findUser.data.user);
             } catch (error) {
                 console.log("error", error);
             }
@@ -54,19 +56,19 @@ const Tweet = ({ tweet, setData }) => {
             console.log('error', error);
         }
     }
-    console.log(currentUser);
-
+    // console.log(userData);
+    // return false;
     return (
         <div>
             {userData && (
                 <>
                     <div className="flex space-x-2">
                         {/* <img src='' alt='' /> */}
-                        <Link to={`/profile/${userData.user._id}`}>
-                            <h3 className="font-bold">{userData.user.name}</h3>
+                        <Link to={`/profile/${userData._id}`}>
+                            <h3 className="font-bold">{userData.name}</h3>
                         </Link>
 
-                        <span className="font-normal">@{userData.user.name}</span>
+                        <span className="font-normal">@{userData.name}</span>
                         <p>- {dateStr}</p>
                     </div>
 
