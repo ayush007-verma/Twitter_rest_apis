@@ -40,8 +40,8 @@ const LeftSideBar = () => {
             </div>
             <div className='flex justify-between'>
                 <div>
-                    <p className='font-bold'>Username</p>
-                    <p className='font-bold'>@Username</p>
+                    <p className='font-bold'>{currentUser.data.name}</p>
+                    <p className='font-bold'>@{currentUser.data.name}</p>
                 </div>
                 <div>
                     <Link to='/login'>
