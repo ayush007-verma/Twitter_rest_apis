@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     currentUser: null,
     isLoading: false,
     error: false,
-}
+};
 
 export const userSlice = createSlice({
     name: "user",
@@ -25,17 +25,26 @@ export const userSlice = createSlice({
             return initialState;
         },
         changeProfile: (state, action) => {
-            state.currentUser.profilePic = action.payload
-        }
-    }
-})
+            state.currentUser.profilePic = action.payload;
+        },
+        following: (state, action) => {
+            // unfollow
+            if (state.currentUser.following.includes(action.payload)) {
+                state.currentUser.following.splice(
+                    state.currentUser.following.findIndex(
+                        (followingId) => followingId === action.payload
+                    )
+                );
+            }
+            // follow
+            else {
+                state.currentUser.following.push(action.payload)
+            }
+        },
+    },
+});
 
-export const {
-    loginStart,
-    loginSuccess,
-    loginFailure,
-    logout,
-    changeProfile
-} = userSlice.actions
+export const { loginStart, loginSuccess, loginFailure, logout, changeProfile, following } =
+    userSlice.actions;
 
-export default userSlice.reducer
+export default userSlice.reducer;
