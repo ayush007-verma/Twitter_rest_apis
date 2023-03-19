@@ -2,7 +2,9 @@ const User = require("../Models/userSchema");
 const Tweet = require('../Models/tweetSchema')
 
 const updateUser = async (req, res, next) => {
-    if (req.params.id === req.user.id) {
+    console.log(req.body)
+    // return false
+    if (req.params.id === req.body.id) {
         try {
             const updatedUser = await User.findByIdAndUpdate(
                 req.params.id,
@@ -23,19 +25,22 @@ const updateUser = async (req, res, next) => {
 };
 
 const deleteUser = async (req, res, next) => {
-    if (req.params.id === req.user.id) {
+    console.log(req.body)
+    // if (req.params.id === req.body.id) {
         try {
             await User.findByIdAndDelete(req.params.id)
-            await Tweet.remove({
-                userId: req.params.id
-            })
+            // await Tweet.remove({
+                // userId: req.params.id
+            // })
+            
             res.status(200).json({ message: "User Deleted successfully", statusCode: 200 });
         } catch (error) {
             return res.status(500).json({message: "Some error occured", err: error, statusCode: 500})
         }
-    } else {
-        return res.status(403).json({message: "You are not authorized to delete this user's data", statusCode: 403})
-    }
+    // }
+    //  else {
+    //     return res.status(403).json({message: "You are not authorized to delete this user's data", statusCode: 403})
+    // }
 };
 
 const follow = async (req, res, next) => {

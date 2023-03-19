@@ -14,10 +14,10 @@ router.get('/getTweets/:id', getAllTweets)
 router.get('/getTweets/all/:id', getUserTweets)
 
 // CREATE TWEET ROUTE
-router.post('/', verifyUser, createTweet)
+router.post('/', createTweet)
 
 // DELETE TWEET
-router.delete('/:id', verifyUser, deleteTweet)
+router.delete('/:id', deleteTweet)
 
 // LIKE OR DISLIKE A TWEET
 router.put('/:id/like', likeOrDislike)

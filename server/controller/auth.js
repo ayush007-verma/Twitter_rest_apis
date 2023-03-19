@@ -42,19 +42,47 @@ const validateUser = (user) => {
 
 const signup = async (req, res) => {
   try {
+
     const errors = validateUser(req.body);
     if (errors) {
       return res.status(400).json(errors);
     }
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+    // res.status(401).json({response : req.headers})
+    // console.log(req.headers)
+    // return false
+    const token = req.headers.authorization.split(' ')[1];
+    
+    console.log("token :-", token)
+    // return false
+    const decodeValue = await admin.auth().verifyIdToken(token);
+    // console.log(decodeValue)
+    // return false
+    // const uid = "";
+    // admin.auth()
+    //   .verifyIdToken(token)
+    //   .then((decodedToken) => {
+    //     uid = decodedToken.uid;
+    //     // ...
+    //   })
+    //   .catch((error) => {
+    //     // Handle error
+    //     console.log(error)
+    //     return res.status(401).json("decode error")
+    //     // {response : req} );
+        
+    //   });
+
     const user = new User({
       _id: new mongoose.Types.ObjectId(),
+      user_id: decodeValue.uid,
       email: req.body.email,
       name: req.body.name,
       phone: req.body.phone,
       password: hashedPassword,
     });
+
     const existingUser = await User.findOne({ email: req.body.email });
     if (existingUser) {
       res
@@ -64,12 +92,14 @@ const signup = async (req, res) => {
           statusCode: 400
         });
     }
-    const token = jwt.sign({ id: user._id }, secretkey);
+    // const token = jwt.sign({ id: user._id }, secretkey);
+    // const token = req.headers.authorization.split(' ')[1];
+
     const savedUser = await user.save();
     res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
+      // .cookie("access_token", token, {
+      //   httpOnly: true,
+      // })
       .status(201)
       .json({ message: "User Signup Successful!", userDetails: savedUser, statusCode: 201 });
   } catch (error) {
@@ -98,7 +128,9 @@ const signin = async (req, res, next) => {
         .status(401)
         .json({ message: "Authentication failed. Wrong password.", statusCode: 401 });
     }
-    const token = jwt.sign({ id: user._id }, secretkey);
+    // const token = jwt.sign({ id: user._id }, secretkey);
+    const token = req.headers.authorization.split(' ')[1];
+
     res
       .cookie("access_token", token, {
         httpOnly: true,
@@ -120,15 +152,15 @@ const signin = async (req, res, next) => {
 
 // login
 const authenticate = async (req, res, next) => {
-  if(!req.headers.authorization) {
+  if (!req.headers.authorization) {
     return res.status(401).json({ message: 'Auth token not found', statusCode: 401 });
   }
-  
-  const token = req.headers.authorization.split(' ')[1];
 
+  const token = req.headers.authorization.split(' ')[1];
+  console.log(token)
   try {
     const decodeValue = await admin.auth().verifyIdToken(token);
-    if(decodeValue) {
+    if (decodeValue) {
       await checkAndResgisterUser(decodeValue);
       req.firebaseUser = decodeValue;
       return next();
@@ -136,7 +168,7 @@ const authenticate = async (req, res, next) => {
   } catch (error) {
     res.status(401).json({ message: 'Unauthorized, token expired', error: error, statusCode: 401 });
   }
-  
+
 }
 
 const checkAndResgisterUser = async (user) => {
@@ -144,13 +176,14 @@ const checkAndResgisterUser = async (user) => {
   console.log(user);
 
   const foundUser = await User.findOne({ user_id: user.uid });
-  if(foundUser != null) return;
+  if (foundUser != null) return;
   console.log('creating new user');
 
   const newUser = await User.create({
     user_id: user.uid,
     email: user.email,
   })
+
 }
 
 

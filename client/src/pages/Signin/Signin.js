@@ -38,32 +38,47 @@ const Signin = () => {
 
     const { name, email, phone, password } = form;
     try {
-      
+      let res = {}
+      // var res1 = {}
       if(isSignUp) {
         const { user } = await createUserWithEmailAndPassword(auth, email, password);
-        
-        await axios.post(`${api}/auth/${isSignUp ? 'signup' : 'signin'}`, { name, email, phone, password }, {
+        console.log("user : ",user)
+         res = await axios.post(`${api}/auth/${isSignUp ? 'signup' : 'signin'}`, { name, email, phone, password }, {
           headers: {
-            Authorization: `Bearer ${user.getIdToken()}`,
-          }
+            Authorization: `Bearer ${user.accessToken}`,
+          } 
         });
+        
+        // const res1 = await axios.get(`${api}/users/findUserId/${res.uid}`)
+        // console.log(res1)
+        // dispatch(loginSuccess(res1.data))
+        
+        dispatch(loginSuccess(res.data.userDetails));
+        navigate('/login')
+        setIsSignUp(false)
+
       }
       else {
         const { user } = await signInWithEmailAndPassword(auth, email, password);
-        const token = user.getIdToken();
-        const res = await axios.post(`${api}/auth/signin`, { email, password }, {
+        console.log(user)
+        const token = user.accessToken;
+        res= await axios.post(`${api}/auth/signin`, { email, password }, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        dispatch(loginSuccess(res.data));
+        
+        // res1 = await axios.get(`${api}/users/findUserId/${res.uid}`)
+        
+        dispatch(loginSuccess(res.data.data));
+        navigate('/')
       }
-
+      console.log(res)
+      // console.log(res1)
       
       // console.log(res);
-      navigate('/')
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       dispatch(loginFailure());
     }
   }

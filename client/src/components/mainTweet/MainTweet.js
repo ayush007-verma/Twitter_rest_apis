@@ -7,24 +7,28 @@ import { useSelector } from "react-redux";
 const MainTweet = () => {
   const [tweetDesc, setTweetDesc] = useState('')
   const { currentUser } = useSelector((state) => state.user)
-
+  const [timeLineApi, callTimelineApi] = useState(false) 
   const handleTweet = async (e) => {
+
     e.preventDefault()
     try {
       const submitTweet = await axios.post(`${api}/tweets`, {
-        userId: currentUser.data._id,
+        userId: currentUser?._id,
         description: tweetDesc
       })
     } catch (error) {
       console.log('error', error);
     }
+    callTimelineApi(!timeLineApi)
   }
 
   return (
     <div className="">
       
       {currentUser && (
-        <p className="font-bold pl-2 my-2">{currentUser.data.name}</p>
+        <p className="font-bold pl-2 my-2">
+          {currentUser?.name}
+          </p>
       )}
       
       <form className="border-b-2 pb-6" onSubmit={handleTweet}>
@@ -39,7 +43,7 @@ const MainTweet = () => {
           Tweet
         </button>
       </form>
-      <TimeLineTweet />
+      <TimeLineTweet timeLineApi={timeLineApi} callTimelineApi={callTimelineApi} />
     </div>
   );
 };

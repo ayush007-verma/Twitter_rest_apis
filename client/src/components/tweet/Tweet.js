@@ -36,7 +36,7 @@ const Tweet = ({ tweet, setData }) => {
 
         try {
             const like = await axios.put(`${api}/tweets/${tweet._id}/like`, {
-                id: currentUser.data._id,
+                id: currentUser._id,
             });
 
             if (location.includes('profile')) {
@@ -48,7 +48,7 @@ const Tweet = ({ tweet, setData }) => {
                 setData(newData.data)
             }
             else {
-                const newData = await axios.get(`${api}/tweets/getTweets/${currentUser.data._id}`)
+                const newData = await axios.get(`${api}/tweets/getTweets/${currentUser._id}`)
                 setData(newData.data)
             }
 
@@ -74,7 +74,7 @@ const Tweet = ({ tweet, setData }) => {
 
                     <p>{tweet.description}</p>
                     <button type="submit" onClick={handleLike}>
-                        {tweet.likes.includes(currentUser.data._id) ? (
+                        {tweet.likes.includes(currentUser._id) ? (
                             <FavoriteIcon className="mr-2 my-2 cursor-pointer" />
                         ) : (
                             <FavoriteBorderIcon className="mr-2 my-2 cursor-pointer" />
