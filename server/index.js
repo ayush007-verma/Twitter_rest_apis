@@ -1,6 +1,8 @@
 const Connection = require("./Database/db")
 
 const bodyParser = require('body-parser')
+
+const { authenticate } = require('./controller/auth')
 const cors = require('cors')
 
 const express = require('express')
@@ -16,6 +18,8 @@ app.use(cookieParser())
 app.use(bodyParser.json({extended : true}))
 app.use(bodyParser.urlencoded({extended : true}))
 app.use(cors())
+
+app.use(authenticate);
 
 Connection("user", "ayushprojectsdb")
 

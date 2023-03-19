@@ -5,7 +5,7 @@ import {
     uploadBytesResumable,
     getDownloadURL,
 } from "firebase/storage";
-import app from "../../firebase";
+import { app } from "../../firebase";
 import axios from 'axios'
 import { api } from "../../urlConfig";
 import { useDispatch, useSelector } from "react-redux";

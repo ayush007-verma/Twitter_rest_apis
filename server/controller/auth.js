@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const admin = require('../Database/firebaseConfig')
 
 const User = require("../Models/userSchema");
 
@@ -115,4 +116,52 @@ const signin = async (req, res, next) => {
       });
   }
 };
-module.exports = { signup, signin };
+
+
+// login
+const authenticate = async (req, res, next) => {
+  if(!req.headers.authorization) {
+    return res.status(401).json({ message: 'Auth token not found', statusCode: 401 });
+  }
+  
+  const token = req.headers.authorization.split(' ')[1];
+
+  try {
+    const decodeValue = await admin.auth().verifyIdToken(token);
+    if(decodeValue) {
+      await checkAndResgisterUser(decodeValue);
+      req.firebaseUser = decodeValue;
+      return next();
+    }
+  } catch (error) {
+    res.status(401).json({ message: 'Unauthorized, token expired', error: error, statusCode: 401 });
+  }
+  
+}
+
+const checkAndResgisterUser = async (user) => {
+  console.log('checking if user exists');
+  console.log(user);
+
+  const foundUser = await User.findOne({ user_id: user.uid });
+  if(foundUser != null) return;
+  console.log('creating new user');
+
+  const newUser = await User.create({
+    user_id: user.uid,
+    email: user.email,
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports = { signup, signin, authenticate };
