@@ -41,11 +41,11 @@ const Signin = () => {
       let res = {}
       // var res1 = {}
       if(isSignUp) {
-        const { user } = await createUserWithEmailAndPassword(auth, email, password);
+        const { user } = await createUserWithEmailAndPassword(auth, email, password); // firebase auth
         console.log("user : ",user)
-         res = await axios.post(`${api}/auth/${isSignUp ? 'signup' : 'signin'}`, { name, email, phone, password }, {
+         res = await axios.post(`${api}/auth/${isSignUp ? 'signup' : 'signin'}`, { name, email, phone, password }, { // mongodb authorization
           headers: {
-            Authorization: `Bearer ${user.accessToken}`,
+            Authorization: `Bearer ${user.accessToken}`, // firebase jwt token
           } 
         });
         
@@ -59,12 +59,12 @@ const Signin = () => {
 
       }
       else {
-        const { user } = await signInWithEmailAndPassword(auth, email, password);
+        const { user } = await signInWithEmailAndPassword(auth, email, password); // firebase auth
         console.log(user)
         const token = user.accessToken;
-        res= await axios.post(`${api}/auth/signin`, { email, password }, {
+        res= await axios.post(`${api}/auth/signin`, { email, password }, { // mongodb auth
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // firebase jwt token
           },
         });
         
