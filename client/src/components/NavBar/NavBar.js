@@ -23,7 +23,7 @@ const NavBar = () => {
                     <h2 className="font-bold text-2xl">
                         {
                             location.includes("profile")
-                            ? currentUser.data.name
+                            ? currentUser.name
                             : location.includes("explore")
                             ? "Explore"
                             : "Home"

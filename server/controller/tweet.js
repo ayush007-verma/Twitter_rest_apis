@@ -22,13 +22,16 @@ const createTweet = async (req, res, next) => {
 
 const deleteTweet = async (req, res, next) => {
     try {
-        const tweet = await Tweet.findById(req.params.id)
-        if (tweet.userId === req.body.id) {
-            await tweet.deleteOne()
+        // const tweets = await Tweet.findById(req.params.id)
+        
+        await Tweet.remove({userId : req.params.id})
+
+        // if (tweet.userId === req.body.id) {
+            // await tweet.delete({userId : req.params.id})
             res.status(200).json({ message: "Tweet deleted successfully", statusCode: 200 })
-        } else {
-            res.status(403).json({ message: "Not Authenticated", statusCode: 403 })
-        }
+        // } else {
+            // res.status(403).json({ message: "Not Authenticated", statusCode: 403 })
+        // }
     } catch (error) {
         res.status(500).json({ message: error, statusCode: 500 })
     }

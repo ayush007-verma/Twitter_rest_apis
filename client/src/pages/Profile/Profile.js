@@ -22,7 +22,7 @@ const Profile = () => {
     if (!currentUser.data.following.includes(id)) {
       try {
         const follow = await axios.put(`${api}/users/follow/${id}`, {
-          id: currentUser.data._id,
+          id: currentUser._id,
         });
         dispatch(following(id));
       } catch (error) {
@@ -31,7 +31,7 @@ const Profile = () => {
     } else {
       try {
         const unfollow = await axios.put(`${api}/users/unfollow/${id}`, {
-          id: currentUser.data._id,
+          id: currentUser._id,
         });
         dispatch(following(id));
       } catch (error) {
@@ -44,9 +44,10 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const userTweets = await axios.get(`${api}/tweets/getTweets/all/${id}`);
+        // console.log("userTweets" , userTweets)
         setUserTweets(userTweets.data);
-
         const userProfile = await axios.get(`${api}/users/find/${id}`);
+        console.log("response from get :-> " ,userProfile)
         setUserProfile(userProfile.data);
       } catch (error) {
         console.log("error", error);
@@ -72,14 +73,14 @@ const Profile = () => {
               alt="Profile Picture"
               className="w-12 h-12 rounded-full"
             />
-            {currentUser.data._id === id ? (
+            {currentUser._id === id ? (
               <button
                 className="px-4 py-2 bg-blue-500 rounded-full text-white"
                 onClick={() => setOpen(true)}
               >
                 Edit Profile
               </button>
-            ) : currentUser.data.following.includes(id) ? (
+            ) : currentUser.following.includes(id) ? (
               <button
                 className="px-4 py-2 bg-blue-500 rounded-full text-white"
                 onClick={handleFollow}

@@ -19,7 +19,7 @@ const ExploreTweets = () => {
     };
 
     fetchData()
-  }, [currentUser.data._id])
+  }, [currentUser._id])
 
   // console.log(exploreTweets);
   return (

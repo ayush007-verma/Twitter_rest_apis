@@ -27,16 +27,25 @@ router.get('/find/:id', (req, res) => {
         .catch(error => res.status(500).json({ message: 'Server Error', err: error, statusCode: 500 }))
 })
 
+// find user by firbase user_id
+router.get('/findUserId/:id', (req, res) => {
+    const {name  ,_id } = User.find({user_id : req.params.id})
+        .then(result => res.status(200).json({ message: 'Success', user: result, statusCode: 200  }))
+        .catch(error => res.status(500).json({ message: 'Server Error', err: error, statusCode: 500 }))
+    })
+
+
+
 // UPDATE USER ROUTE
-router.put('/:id', verifyUser, updateUser)
+router.put('/:id', updateUser)
 
 // DELETE USER ROUTE
-router.delete('/:id', verifyUser, deleteUser)
+router.delete('/:id', deleteUser)
 
 // FOLLOW
-router.put('/follow/:id', verifyUser, follow)
+router.put('/follow/:id', follow)
 
 // UNFOLLOW
-router.put('/unfollow/:id', verifyUser, unfollow)
+router.put('/unfollow/:id', unfollow)
 
 module.exports = router

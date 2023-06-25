@@ -9,7 +9,7 @@ import { logout } from '../../redux/userSlice';
 const LeftSideBar = () => {
     const { currentUser } = useSelector((state) => state.user)
     const dispatch = useDispatch()
-
+    console.log(currentUser)
     const handleLogout = () => {
         dispatch(logout())
     }
@@ -31,7 +31,7 @@ const LeftSideBar = () => {
                     </div>
                 </Link>
 
-                <Link to={`/profile/${currentUser.data._id}`}>
+                <Link to={`/profile/${currentUser?._id}`}>
                     <div className='flex items-center space-x-6 p-2 hover:bg-slate-200 rounded-full cursor-pointer'>
                         <PersonIcon fontSize='large' />
                         <p>Profile</p>
@@ -40,8 +40,9 @@ const LeftSideBar = () => {
             </div>
             <div className='flex justify-between'>
                 <div>
-                    <p className='font-bold'>{currentUser.data.name}</p>
-                    <p className='font-bold'>@{currentUser.data.name}</p>
+                    <p className='font-bold'>{currentUser?.name}</p>
+                    <p className='font-bold'>@{currentUser?.name}</p>
+
                 </div>
                 <div>
                     <Link to='/login'>

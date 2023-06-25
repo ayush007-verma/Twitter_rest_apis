@@ -5,7 +5,7 @@ import {
     uploadBytesResumable,
     getDownloadURL,
 } from "firebase/storage";
-import app from "../../firebase";
+import { app } from "../../firebase";
 import axios from 'axios'
 import { api } from "../../urlConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,7 +69,8 @@ const EditProfile = ({ setOpen }) => {
                 getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
                     // console.log('File available at', downloadURL);
                     try {
-                        const updateProfile = await axios.put(`${api}/users/${currentUser.data._id}`, {
+                        const updateProfile = await axios.put(`${api}/users/${currentUser._id}`, {
+                            id : currentUser._id,
                             profilePic: downloadURL,
                         })
                     } catch (error) {
@@ -83,7 +84,10 @@ const EditProfile = ({ setOpen }) => {
     }
     
     const handleDelete = async () => {
-        const deleteProfile = await axios.delete(`${api}/users/${currentUser.data._id}`)
+        const deleteProfile = await axios.delete(`${api}/users/${currentUser._id}`,{
+            id : currentUser._id,
+        })
+        const deleteTweets = await axios.delete(`${api}/tweets/${currentUser._id}`)
         dispatch(logout())
         navigate('/login')
     }
